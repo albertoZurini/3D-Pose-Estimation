@@ -8,18 +8,18 @@ This process creates a mathematical bridge between the 3D world and the 2D image
 2.  **Finding a Reference:** Next, we introduce a known pattern, like a checkerboard, into the scene to serve as a real-world anchor point.
 3.  **Projecting Points:** Finally, we use this information to calculate exactly where any 3D point on our object will appear in the 2D image.
 
-![Pokemon GO](./assets/pokemon-go.webp){: width=50%}
+![Pokemon GO](./assets/pokemon-go.webp)
 
 This is the fundamental concept that powers augmented reality, allowing a virtual character to look like it's standing right in your room. An example using this technique is the mobile game [Table zombies](https://www.youtube.com/watch?v=OZzaAQ3e9fU).
 
-![Table Zombies](./assets/table-zombies.webp){: width=50%}
+![Table Zombies](./assets/table-zombies.webp)
 
 
 The whole code for this experiment can be found in this repository + some sample images that are needed for the camera calibration. I'm also attaching the weights of my camera, so you can directly run the second notebook and play with it as well as use your own images and construct your 3D scenes.
 
 # Camera Calibration
 
-![A distorted reflection in a mirror](./assets/mirror.webp){: width=50%}
+![A distorted reflection in a mirror](./assets/mirror.webp)
 
 Every camera lens has flaws. It subtly bends the light passing through it, which causes distortion, similar to the effect of a funhouse mirror. Without accounting for these specific flaws, any 3D calculations would be inaccurate.
 
@@ -76,7 +76,7 @@ Together, the rotation matrix (`R`) and the translation vector (`tvec`) define t
 
 # Point Projection
 
-![Point projection](./assets/point-projection.webp){: width=50%}
+![Point projection](./assets/point-projection.webp)
 
 While OpenCV's API simplifies this process with a function called `projectPoints`, it's interesting to look at the linear algebra that makes it work.
 
