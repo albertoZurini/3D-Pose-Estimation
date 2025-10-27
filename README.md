@@ -8,15 +8,18 @@ This process creates a mathematical bridge between the 3D world and the 2D image
 2.  **Finding a Reference:** Next, we introduce a known pattern, like a checkerboard, into the scene to serve as a real-world anchor point.
 3.  **Projecting Points:** Finally, we use this information to calculate exactly where any 3D point on our object will appear in the 2D image.
 
-![Pokemon GO](./assets/pokemon-go.webp)
+![Pokemon GO](./assets/pokemon-go.webp){: width=50%}
 
 This is the fundamental concept that powers augmented reality, allowing a virtual character to look like it's standing right in your room. An example using this technique is the mobile game [Table zombies](https://www.youtube.com/watch?v=OZzaAQ3e9fU).
+
+![Table Zombies](./assets/table-zombies.webp){: width=50%}
+
 
 The whole code for this experiment can be found in this repository + some sample images that are needed for the camera calibration. I'm also attaching the weights of my camera, so you can directly run the second notebook and play with it as well as use your own images and construct your 3D scenes.
 
 # Camera Calibration
 
-![A distorted reflection in a mirror](./assets/mirror.webp)
+![A distorted reflection in a mirror](./assets/mirror.webp){: width=50%}
 
 Every camera lens has flaws. It subtly bends the light passing through it, which causes distortion, similar to the effect of a funhouse mirror. Without accounting for these specific flaws, any 3D calculations would be inaccurate.
 
@@ -73,6 +76,8 @@ Together, the rotation matrix (`R`) and the translation vector (`tvec`) define t
 
 # Point Projection
 
+![Point projection](./assets/point-projection.webp){: width=50%}
+
 While OpenCV's API simplifies this process with a function called `projectPoints`, it's interesting to look at the linear algebra that makes it work.
 
 To implement this manually, we need a way to convert a point from world coordinates, such as $X_w = (x, y, z)$ in millimeters, to a point in image coordinates, $X_i = (x, y)$ in pixels. Because the only non-linear element in our model is the lens distortion (which we've already corrected for), we can project a 3D point into our 2D picture using straightforward linear algebra.
@@ -96,7 +101,7 @@ Here is what each term represents:
 
 You might wonder why we add a `1` to our 3D point `[X, Y, Z]` to make it `[X, Y, Z, 1]`. This is a clever mathematical trick that makes our lives much easier. To move an object in 3D space, you need to rotate it and then translate it (move it). This would typically require two separate operations: a matrix multiplication for the rotation and a vector addition for the translation.
 
-By adding that extra '1', we convert a transformation that would be affine (multiplication plus addition) into one that is purely linear (a single matrix multiplication). This is more elegant and efficient for several key reasons:
+By adding that extra `1`, we convert a transformation that would be affine (multiplication plus addition) into one that is purely linear (a single matrix multiplication). This is more elegant and efficient for several key reasons:
 
 1.  **Composition of Transformations:** In graphics and robotics, objects undergo multiple transformations. Without homogeneous coordinates, applying a rotation, then a translation, then a scaling would be algebraically messy. With them, we can combine all these steps into a single matrix by simply multiplying them together: `M_total = M_scale * M_translate * M_rotate`. This final matrix can then be applied to every point in the object, which is far more efficient.
 
@@ -153,7 +158,7 @@ This line multiplies the intrinsic camera matrix (`K`) by the extrinsic matrix (
 
 `object_points_h = np.hstack([object_points, np.ones((object_points.shape[0], 1))])`
 
-To use our 3×4 projection matrix, we must first convert our 3D input points from `[X, Y, Z]` to homogeneous coordinates by adding a '1', making them `[X, Y, Z, 1]`.
+To use our 3×4 projection matrix, we must first convert our 3D input points from `[X, Y, Z]` to homogeneous coordinates by adding a `1`, making them `[X, Y, Z, 1]`.
 
 #### 5. Perform the Projection
 
